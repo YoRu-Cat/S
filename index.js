@@ -26,18 +26,43 @@ let yVelocity = 0;
 let score = 0;
 //game loop
 function drawGame() {
-  clearScreen();
   changeSnakePosition();
+  let result = isGameOver();
+  if (result) {
+    return;
+  }
+  clearScreen();
   checkAppleCollision();
   drawApple();
   drawSnake();
   drawScore();
   setTimeout(drawGame, 1000 / speed);
 }
+function isGameOver() {
+  let gameOver = false;
+
+  //walls
+  if (headX < 0) {
+    gameOver = true;
+  } else if (headX == tileCount + 10) {
+    gameOver = true;
+  } else if (headY < 0) {
+    gameOver = true;
+  } else if (headY == tileCount + 10) {
+    gameOver = true;
+  }
+
+  if (gameOver) {
+    ctx.fillStyle = "white";
+    ctx.font = "50px Verdana";
+    ctx.fillText("Game Over!", canvas.width / 3.8, canvas.height / 2);
+  }
+  return gameOver;
+}
 function drawScore() {
   ctx.fillStyle = "white";
   ctx.font = "14px Verdana";
-  ctx.fillText("Score " + score, canvas.width - 60, 16);
+  ctx.fillText("Score " + score, canvas.width - 65, 16);
 }
 function clearScreen() {
   ctx.fillStyle = "rgb(16, 0, 7)";
