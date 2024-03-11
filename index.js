@@ -24,6 +24,7 @@ let xVelocity = 0;
 let yVelocity = 0;
 
 let score = 0;
+const gulpSound = new Audio("gulp.mp3");
 //game loop
 function drawGame() {
   changeSnakePosition();
@@ -36,6 +37,21 @@ function drawGame() {
   drawApple();
   drawSnake();
   drawScore();
+  if (score > 5) {
+    speed = 11;
+  }
+  if (score > 10) {
+    speed = 15;
+  }
+  if (score > 15) {
+    speed = 18;
+  }
+  if (score > 20) {
+    speed = 21;
+  }
+  if (score > 40) {
+    speed = 25;
+  }
   setTimeout(drawGame, 1000 / speed);
 }
 function isGameOver() {
@@ -104,6 +120,7 @@ function checkAppleCollision() {
     appleY = Math.floor(Math.random() * tileCount);
     tailLength++;
     score++;
+    gulpSound.play();
   }
 }
 document.addEventListener("keydown", keydown);
