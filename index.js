@@ -22,6 +22,8 @@ let appleY = 5;
 
 let xVelocity = 0;
 let yVelocity = 0;
+
+let score = 0;
 //game loop
 function drawGame() {
   clearScreen();
@@ -29,7 +31,13 @@ function drawGame() {
   checkAppleCollision();
   drawApple();
   drawSnake();
+  drawScore();
   setTimeout(drawGame, 1000 / speed);
+}
+function drawScore() {
+  ctx.fillStyle = "white";
+  ctx.font = "14px Verdana";
+  ctx.fillText("Score " + score, canvas.width - 60, 16);
 }
 function clearScreen() {
   ctx.fillStyle = "rgb(16, 0, 7)";
@@ -42,7 +50,7 @@ function drawSnake() {
     ctx.fillRect(part.x * tileCount, part.y * tileCount, tileSize, tileSize);
   }
   snakeParts.push(new snakePart(headX, headY));
-  if (snakeParts.length > tailLength) {
+  while (snakeParts.length > tailLength) {
     snakeParts.shift();
   }
   ctx.fillStyle = "orange";
@@ -61,6 +69,7 @@ function checkAppleCollision() {
     appleX = Math.floor(Math.random() * tileCount);
     appleY = Math.floor(Math.random() * tileCount);
     tailLength++;
+    score++;
   }
 }
 document.addEventListener("keydown", keydown);
