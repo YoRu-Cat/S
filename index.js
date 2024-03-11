@@ -23,13 +23,40 @@ let appleY = 5;
 let xVelocity = 0;
 let yVelocity = 0;
 
+let inputXVelocity = 0;
+let inputYVelocity = 0;
+
 let score = 0;
 const gulpSound = new Audio("gulp.mp3");
+
+let previousXVelocity = 0;
+let previousYVelocity = 0;
 //game loop
 function drawGame() {
+  xVelocity = inputXVelocity;
+  yVelocity = inputYVelocity;
+  // was moving right and try to move left
+  if (previousXVelocity === 1 && xVelocity === -1) {
+    xVelocity = previousXVelocity;
+  }
+  // was moving left and try to move right
+  if (previousXVelocity === -1 && xVelocity === 1) {
+    xVelocity = previousXVelocity;
+  }
+  // was moving up and try to move down
+  if (previousYVelocity === 1 && yVelocity === -1) {
+    yVelocity = previousYVelocity;
+  }
+  // was moving down and try to move up
+  if (previousYVelocity === -1 && yVelocity === 1) {
+    yVelocity = previousYVelocity;
+  }
+  previousXVelocity = xVelocity;
+  previousYVelocity = yVelocity;
   changeSnakePosition();
   let result = isGameOver();
   if (result) {
+    document.removeEventListener("keydown", keydown);
     return;
   }
   clearScreen();
@@ -126,28 +153,24 @@ function checkAppleCollision() {
 document.addEventListener("keydown", keydown);
 function keydown(event) {
   // up
-  if (event.keyCode == 38) {
-    if (yVelocity == 1) return;
-    yVelocity = -1;
-    xVelocity = 0;
+  if (event.keyCode == 38 || event.keyCode == 87) {
+    inputYVelocity = -1;
+    inputXVelocity = 0;
   }
   // down
-  if (event.keyCode == 40) {
-    if (yVelocity == -1) return;
-    yVelocity = 1;
-    xVelocity = 0;
+  if (event.keyCode == 40 || event.keyCode == 83) {
+    inputYVelocity = 1;
+    inputXVelocity = 0;
   }
   // left
-  if (event.keyCode == 37) {
-    if (xVelocity == 1) return;
-    yVelocity = 0;
-    xVelocity = -1;
+  if (event.keyCode == 37 || event.keyCode == 65) {
+    inputYVelocity = 0;
+    inputXVelocity = -1;
   }
   // right
-  if (event.keyCode == 39) {
-    if (xVelocity == -1) return;
-    yVelocity = 0;
-    xVelocity = 1;
+  if (event.keyCode == 39 || event.keyCode == 68) {
+    inputYVelocity = 0;
+    inputXVelocity = 1;
   }
 }
 
